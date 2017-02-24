@@ -73,7 +73,9 @@ module.exports = function (source) {
 }
 
 function licenseComment (packageJSON, licenseText) {
-  var _licenseText = licenseText ? `\n * ${licenseText.replace(/(\*\/)/g, "").replace(/\n/g, "\n * ")}` : '';
+  if(licenseText[licenseText.length - 1] === '\n')
+    licenseText = licenseText.substring(0, licenseText.length - 1);
+  var _licenseText = licenseText ? `\n * ${licenseText.replace(/\n+$/).replace(/(\*\/)/g, '').replace(/\n/g, '\n * ')}` : '';
   var license = packageJSON.license ? sanitizeLicense(packageJSON.license) : packageJSON.licenses ? packageJSON.licenses.map(sanitizeLicense).join(', ') : null;
   return `/*!
  * ${packageJSON.name} (https://npmjs.com/package/${packageJSON.name})
