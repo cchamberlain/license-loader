@@ -1,5 +1,5 @@
-# license-loader
-Inlines licenses into Webpack's output bundle.
+# [license-loader](https://npmjs.com/package/license-loader)
+**Inline licenses into Webpack's output bundle.**
 
 ## Install
 
@@ -17,3 +17,6 @@ Inlines licenses into Webpack's output bundle.
   }
 ```
 
+## Output
+
+![license](https://raw.githubusercontent.com/cchamberlain/license-loader/master/public/images/license.png)
