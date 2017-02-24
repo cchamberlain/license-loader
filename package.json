@@ -1,6 +1,6 @@
 {
   "name": "license-loader",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Inlines licenses into Webpack's output bundle.",
   "main": "index.js",
   "scripts": {
