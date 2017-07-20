@@ -76,7 +76,11 @@ function licenseComment (packageJSON, licenseText) {
   if(licenseText && licenseText[licenseText.length - 1] === '\n')
     licenseText = licenseText.substring(0, licenseText.length - 1);
   var _licenseText = licenseText ? `\n * ${licenseText.replace(/\n+$/).replace(/(\*\/)/g, '').replace(/\n/g, '\n * ')}` : '';
-  var license = packageJSON.license ? sanitizeLicense(packageJSON.license) : packageJSON.licenses ? packageJSON.licenses.map(sanitizeLicense).join(', ') : null;
+  var license = null;
+  var licenseRaw = packageJSON.license || packageJSON.licenses;
+  if (licenseRaw) {
+    license = Array.isArray(licenseRaw) ? licenseRaw.map(sanitizeLicense).join(", ") : sanitizeLicense(licenseRaw);
+  }
   return `/*!
  * ${packageJSON.name} (https://npmjs.com/package/${packageJSON.name})
  * @license${license ? ` ${license}` : ''}
