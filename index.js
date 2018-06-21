@@ -32,18 +32,18 @@ module.exports = function (source) {
 
   try {
     if (this.resourcePath.indexOf('node_modules') !== -1) {
-      // [ "/my/project/", "/moment/", "/moment-dependency/index.js" ]
       var nodeModuleSplit = this.resourcePath.split('node_modules');
-      // "/my/project/node_modules/moment/node_modules/"
+      // [ "/my/project/", "/moment/", "/moment-dependency/index.js" ]
       var packageNodeModulesDir = path.join(nodeModuleSplit.slice(0, nodeModuleSplit.length - 1).join('node_modules'), 'node_modules');
-      // "moment-dependency/index.js"
-      var relativeFilePath = nodeModuleSplit[nodeModuleSplit.length - 1].replace(/^[/\\]*/, '');
-      // "moment-dependency"
-      var relativePackageDir = relativeFilePath.replace(/[/\\].*$/i, '');
-      // "index.js"
-      var relativeSubFilePath = relativeFilePath.replace(/[/\\].*$/i, '');
-      // "/my/project/node_modules/moment/node_modules/moment-dependency"
+      // "/my/project/node_modules/moment/node_modules/"
+      var relativeFilePath = nodeModuleSplit[nodeModuleSplit.length - 1].replace(/^[/\\]*/, '').replace("\\", "/");
+      // "moment-dependency/index.js" | "@kaggle/roslyn-loader/index.js"
+      var relativeFilePathParts = relativeFilePath.split("/");
+      // ["moment-dependency","index.js"] | ["@kaggle","roslyn-loader","index.js"]
+      var relativePackageDir = relativeFilePath.startsWith("@") ? relativeFilePathParts.slice(0, 2).join("/") : relativeFilePathParts[0];
+      // "moment-dependency" | "@kaggle/roslyn-loader"
       var packageDir = path.resolve(packageNodeModulesDir, relativePackageDir);
+      // "/my/project/node_modules/moment/node_modules/moment-dependency"
       var packageJSON = require(path.join(packageDir, 'package.json'));
 
       const fingerprint = `${packageJSON.name}:${packageJSON.version}`
